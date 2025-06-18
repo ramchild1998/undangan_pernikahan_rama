@@ -238,6 +238,7 @@
             object-fit: contain;
             border-radius: 10px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
         }
         
         .lightbox-btn { 
@@ -259,6 +260,146 @@
         #lightbox-close { top: 30px; right: 30px; } 
         #lightbox-prev { top: 50%; left: 30px; transform: translateY(-50%); } 
         #lightbox-next { top: 50%; right: 30px; transform: translateY(-50%); }
+
+        /* Enhanced Lightbox dengan Thumbnail Navigation */
+        .lightbox-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .lightbox-main-image {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .lightbox-thumbnails {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,215,0,0.3);
+            max-width: 90%;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold) rgba(255,255,255,0.1);
+        }
+
+        .lightbox-thumbnails::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .lightbox-thumbnails::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+
+        .lightbox-thumbnails::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 3px;
+        }
+
+        .lightbox-thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .lightbox-thumbnail:hover {
+            border-color: var(--gold);
+            transform: scale(1.1);
+        }
+
+        .lightbox-thumbnail.active {
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(255,215,0,0.5);
+        }
+
+        .lightbox-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lightbox-counter {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .lightbox-zoom-controls {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .zoom-btn {
+            color: white;
+            background: rgba(0,0,0,0.7);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .zoom-btn:hover {
+            background: rgba(255,215,0,0.2);
+            transform: scale(1.1);
+        }
+
+        .lightbox-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-image-container img {
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-image-container.zoomed img {
+            transform: scale(1.5);
+            cursor: grab;
+        }
+
+        .lightbox-image-container.zoomed img:active {
+            cursor: grabbing;
+        }
 
         /* Enhanced Buttons */
         .btn-primary {
@@ -295,6 +436,52 @@
             box-shadow: 0 10px 25px rgba(255,215,0,0.4);
         }
 
+        /* Special styling for view all photos button */
+        #view-all-photos-btn {
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold), var(--gold));
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+            font-size: 1.1em;
+            padding: 18px 35px;
+            border: 2px solid rgba(255,215,0,0.3);
+            position: relative;
+        }
+        
+        #view-all-photos-btn::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--gold), var(--dark-gold), var(--gold), var(--dark-gold));
+            background-size: 400% 400%;
+            border-radius: 50px;
+            z-index: -1;
+            animation: borderGlow 2s ease-in-out infinite alternate;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        #view-all-photos-btn:hover::after {
+            opacity: 1;
+        }
+        
+        #view-all-photos-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255,215,0,0.5);
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
         /* Enhanced Cards */
         .glass-card {
             background: rgba(0,0,0,0.3);
@@ -327,6 +514,7 @@
             transition: all 0.4s ease;
             cursor: pointer;
             position: relative;
+            aspect-ratio: 1;
         }
         
         .gallery-item::before {
@@ -350,6 +538,35 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
+        /* Responsive gallery grid */
+        @media screen and (min-width: 640px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+            }
+        }
+        
+        @media screen and (min-width: 768px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+            }
+        }
+        
+        @media screen and (min-width: 1024px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 35px;
+            }
+        }
+        
+        @media screen and (min-width: 1280px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 40px;
+            }
+        }
+
         /* Responsive Design */
         @media screen and (max-width: 768px) {
             .timeline-vertical-container::after { left: 40px; }
@@ -369,6 +586,59 @@
             
             #bottom-nav a {
                 padding: 8px 12px;
+            }
+            
+            /* Mobile lightbox adjustments */
+            .lightbox-content {
+                padding: 10px;
+            }
+            
+            .lightbox-counter {
+                top: 15px;
+                left: 15px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            .lightbox-zoom-controls {
+                top: 15px;
+                gap: 5px;
+            }
+            
+            .zoom-btn {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .lightbox-thumbnails {
+                bottom: 10px;
+                padding: 10px;
+                gap: 8px;
+                max-width: 95%;
+            }
+            
+            .lightbox-thumbnail {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .lightbox-btn {
+                padding: 12px;
+            }
+            
+            #lightbox-close { top: 15px; right: 15px; } 
+            #lightbox-prev { top: 50%; left: 15px; transform: translateY(-50%); } 
+            #lightbox-next { top: 50%; right: 15px; transform: translateY(-50%); }
+            
+            /* Mobile gallery adjustments */
+            .gallery-container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+                padding: 15px 0;
+            }
+            
+            .gallery-item {
+                aspect-ratio: 1;
             }
         }
 
@@ -495,38 +765,91 @@
             </div>
         </section>
         
-        <!-- Enhanced Journey Section -->
-        <section id="our-journey" class="dark-section py-24 px-4">
-             <div class="text-center mb-16 animate-on-scroll">
-                <h2 class="font-great-vibes text-6xl md:text-7xl text-yellow-400 mb-4">Kisah Kami</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-yellow-500 to-yellow-600 mx-auto rounded-full"></div>
-                <p class="max-w-2xl mx-auto mt-6 text-gray-300 font-light text-lg">Dua jiwa namun satu pikiran, dua hati namun satu perasaan.</p>
+        <!-- Enhanced Journey Section dengan Design yang Lebih Menarik -->
+        <section id="our-journey" class="dark-section py-24 px-4 relative overflow-hidden">
+            <!-- Background Decoration -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-20 left-10 w-32 h-32 bg-yellow-400 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-20 right-10 w-40 h-40 bg-red-500 rounded-full blur-3xl"></div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-gradient-to-r from-yellow-400 to-red-500 rounded-full blur-3xl"></div>
             </div>
             
-            <div class="timeline-vertical-container">
-                <div class="timeline-item-vertical left animate-on-scroll">
-                    <div class="timeline-content-vertical">
-                        <h3 class="font-bold text-yellow-400 text-xl mb-2">November 2018</h3>
-                        <p class="text-gray-200 leading-relaxed">Awal mula tak terduga, di mana dua pasang mata bertemu dalam keheningan malam yang indah.</p>
+            <div class="text-center mb-20 animate-on-scroll relative z-10">
+                <div class="inline-block p-4 rounded-full bg-gradient-to-r from-yellow-400/20 to-red-500/20 backdrop-blur-sm mb-6">
+                    <i data-feather="heart" class="w-12 h-12 text-yellow-400 mx-auto"></i>
+                </div>
+                <h2 class="font-great-vibes text-6xl md:text-7xl text-yellow-400 mb-6 drop-shadow-lg">Kisah Kami</h2>
+                <div class="w-32 h-1 bg-gradient-to-r from-yellow-500 via-red-500 to-yellow-600 mx-auto rounded-full shadow-lg"></div>
+                <p class="max-w-3xl mx-auto mt-8 text-gray-300 font-light text-lg leading-relaxed">
+                    Dua jiwa namun satu pikiran, dua hati namun satu perasaan. 
+                    <span class="text-yellow-400 font-medium">Perjalanan cinta yang tak terduga</span> membawa kami ke hari yang penuh makna ini.
+                </p>
+            </div>
+            
+            <div class="timeline-vertical-container relative z-10">
+                <!-- Timeline Item 1 -->
+                <div class="timeline-item-vertical left animate-on-scroll group">
+                    <div class="timeline-content-vertical glass-card border-l-4 border-yellow-400 hover:border-yellow-300 transition-all duration-300 hover:scale-105">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center shadow-lg">
+                                <i data-feather="calendar" class="w-6 h-6 text-white"></i>
+                            </div>
+                            <h3 class="font-bold text-yellow-400 text-xl">November 2018</h3>
+                        </div>
+                        <p class="text-gray-200 leading-relaxed text-lg">Awal mula tak terduga, di mana dua pasang mata bertemu dalam keheningan malam yang indah. 
+                        <span class="text-yellow-300 font-medium">Saat pertama kali kami saling memandang</span>, dunia seakan berhenti berputar.</p>
                     </div>
                 </div>
-                <div class="timeline-item-vertical right animate-on-scroll">
-                    <div class="timeline-content-vertical">
-                        <h3 class="font-bold text-yellow-400 text-xl mb-2">Januari 2019</h3>
-                        <p class="text-gray-200 leading-relaxed">Secangkir kopi menjadi saksi bisu awal kebersamaan kami, di mana setiap kata terasa begitu berarti.</p>
+                
+                <!-- Timeline Item 2 -->
+                <div class="timeline-item-vertical right animate-on-scroll group">
+                    <div class="timeline-content-vertical glass-card border-r-4 border-red-400 hover:border-red-300 transition-all duration-300 hover:scale-105">
+                        <div class="flex items-center gap-4 mb-4 justify-end">
+                            <h3 class="font-bold text-red-400 text-xl">Januari 2019</h3>
+                            <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-red-600 rounded-full flex items-center justify-center shadow-lg">
+                                <i data-feather="coffee" class="w-6 h-6 text-white"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-200 leading-relaxed text-lg">Secangkir kopi menjadi saksi bisu awal kebersamaan kami, di mana setiap kata terasa begitu berarti. 
+                        <span class="text-red-300 font-medium">Momen yang mengubah segalanya</span> dan membuka lembaran baru dalam hidup kami.</p>
                     </div>
                 </div>
-                <div class="timeline-item-vertical left animate-on-scroll">
-                    <div class="timeline-content-vertical">
-                        <h3 class="font-bold text-yellow-400 text-xl mb-2">Desember 2020</h3>
-                        <p class="text-gray-200 leading-relaxed">Sebuah janji untuk selamanya terucap, di bawah langit yang penuh bintang-bintang harapan.</p>
+                
+                <!-- Timeline Item 3 -->
+                <div class="timeline-item-vertical left animate-on-scroll group">
+                    <div class="timeline-content-vertical glass-card border-l-4 border-yellow-400 hover:border-yellow-300 transition-all duration-300 hover:scale-105">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center shadow-lg">
+                                <i data-feather="star" class="w-6 h-6 text-white"></i>
+                            </div>
+                            <h3 class="font-bold text-yellow-400 text-xl">Desember 2020</h3>
+                        </div>
+                        <p class="text-gray-200 leading-relaxed text-lg">Sebuah janji untuk selamanya terucap, di bawah langit yang penuh bintang-bintang harapan. 
+                        <span class="text-yellow-300 font-medium">Malam yang tak akan pernah kami lupakan</span>, saat cinta kami diresmikan.</p>
                     </div>
                 </div>
-                <div class="timeline-item-vertical right animate-on-scroll">
-                    <div class="timeline-content-vertical">
-                        <h3 class="font-bold text-yellow-400 text-xl mb-2">Juni 2025</h3>
-                        <p class="text-gray-200 leading-relaxed">Hari di mana dua jiwa bersatu dalam ikatan suci, mengawali perjalanan baru yang penuh cinta dan kasih sayang.</p>
+                
+                <!-- Timeline Item 4 -->
+                <div class="timeline-item-vertical right animate-on-scroll group">
+                    <div class="timeline-content-vertical glass-card border-r-4 border-red-400 hover:border-red-300 transition-all duration-300 hover:scale-105">
+                        <div class="flex items-center gap-4 mb-4 justify-end">
+                            <h3 class="font-bold text-red-400 text-xl">Juni 2025</h3>
+                            <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-red-600 rounded-full flex items-center justify-center shadow-lg">
+                                <i data-feather="heart" class="w-6 h-6 text-white"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-200 leading-relaxed text-lg">Hari di mana dua jiwa bersatu dalam ikatan suci, mengawali perjalanan baru yang penuh cinta dan kasih sayang. 
+                        <span class="text-red-300 font-medium">Awal dari kebahagiaan yang tak terbatas</span> dan komitmen untuk selamanya.</p>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Decoration -->
+            <div class="text-center mt-16 animate-on-scroll">
+                <div class="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-yellow-400/20 to-red-500/20 backdrop-blur-sm rounded-full border border-yellow-400/30">
+                    <i data-feather="arrow-down" class="w-6 h-6 text-yellow-400 animate-bounce"></i>
+                    <span class="text-yellow-400 font-medium">Perjalanan kami berlanjut...</span>
+                    <i data-feather="arrow-down" class="w-6 h-6 text-yellow-400 animate-bounce"></i>
                 </div>
             </div>
         </section>
@@ -579,33 +902,205 @@
             </div>
         </section>
 
-        <!-- Enhanced Galeri Section -->
-        <section id="galeri" class="content-card py-24 px-8">
-            <div class="animate-on-scroll text-center mb-16">
-                <h2 class="font-great-vibes text-6xl md:text-7xl text-red-900 mb-4">Momen Indah Kami</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-yellow-500 to-yellow-600 mx-auto rounded-full mb-8"></div>
-                <p class="max-w-2xl mx-auto text-gray-600 font-light text-lg">Tidak ada yang spesial dalam cerita kami. Tapi kami sangat spesial untuk satu sama lain, dan kami bersyukur, dipertemukan Tuhan diwaktu terbaik.</p>
+        <!-- Enhanced Galeri Section dengan Design yang Lebih Menarik -->
+        <section id="galeri" class="content-card py-24 px-8 relative overflow-hidden">
+            <!-- Background Decorative Elements -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-yellow-400/10 to-transparent rounded-full blur-xl"></div>
+                <div class="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-tl from-red-900/10 to-transparent rounded-full blur-xl"></div>
+                <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-r from-yellow-500/5 to-transparent rounded-full blur-lg"></div>
             </div>
             
-            <div class="gallery-container animate-on-scroll">
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 1" class="w-full h-full object-cover">
+            <div class="animate-on-scroll text-center mb-16 relative z-10">
+                <div class="inline-block mb-6">
+                    <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <i data-feather="image" class="w-10 h-10 text-white"></i>
+                    </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 2" class="w-full h-full object-cover">
+                <h2 class="font-great-vibes text-6xl md:text-7xl text-red-900 mb-4 drop-shadow-lg">Momen Indah Kami</h2>
+                <div class="w-32 h-1 bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 mx-auto rounded-full mb-8 shadow-lg"></div>
+                <p class="max-w-3xl mx-auto text-gray-600 font-light text-lg leading-relaxed">Tidak ada yang spesial dalam cerita kami. Tapi kami sangat spesial untuk satu sama lain, dan kami bersyukur, dipertemukan Tuhan diwaktu terbaik.</p>
+            </div>
+            
+            <!-- Enhanced Gallery Container dengan Masonry Layout -->
+            <div class="gallery-container animate-on-scroll relative z-10">
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="0">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Momen Pertama</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 3" class="w-full h-full object-cover">
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="1">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Kenangan Manis</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 4" class="w-full h-full object-cover">
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:rotate-1" data-index="2">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Petualangan Kami</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 5" class="w-full h-full object-cover">
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="3">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 4" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Senyuman Kami</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 6" class="w-full h-full object-cover">
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:rotate-1" data-index="4">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 5" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Cinta Kami</p>
+                        </div>
+                    </div>
                 </div>
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="5">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 6" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Masa Depan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tambahan foto untuk galeri yang lebih lengkap -->
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="6">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 7" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Kebersamaan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="7">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 8" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Impian Kami</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="8">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 9" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Kedamaian</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="9">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 10" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Momen Spesial</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:rotate-1" data-index="10">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 11" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Kenangan Indah</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="11">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 12" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Cinta Abadi</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="12">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 13" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Janji Suci</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:-rotate-1" data-index="13">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 14" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Bahagia Selamanya</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item group cursor-pointer transform hover:scale-105 transition-all duration-500 hover:rotate-1" data-index="14">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Galeri 15" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <p class="font-semibold text-sm">Masa Depan Cerah</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Floating Action Button untuk View All -->
+            <div class="text-center mt-12 animate-on-scroll">
+                <div class="relative inline-block">
+                    <!-- Particle effects -->
+                    <div class="absolute inset-0 -m-4">
+                        <div class="absolute top-0 left-0 w-2 h-2 bg-yellow-400 rounded-full opacity-60 animate-ping"></div>
+                        <div class="absolute top-2 right-0 w-1 h-1 bg-yellow-400 rounded-full opacity-80 animate-pulse"></div>
+                        <div class="absolute bottom-0 left-2 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-70 animate-bounce"></div>
+                        <div class="absolute bottom-2 right-2 w-1 h-1 bg-yellow-400 rounded-full opacity-90 animate-ping"></div>
+                    </div>
+                    
+                    <button id="view-all-photos-btn" class="btn-primary inline-flex items-center gap-3 group hover:scale-105 transition-all duration-300 shadow-lg relative z-10">
+                        <i data-feather="eye" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                        <span class="relative">
+                            Lihat Semua Foto
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                        </span>
+                    </button>
+                </div>
+                
+                <!-- Additional info -->
+                <p class="text-sm text-gray-600 mt-4 font-light">
+                    <i data-feather="info" class="w-4 h-4 inline mr-1"></i>
+                    Klik untuk melihat semua foto dalam galeri interaktif
+                </p>
             </div>
         </section>
         
@@ -725,8 +1220,8 @@
                     <div class="space-y-4">
                         <div>
                             <p class="font-bold text-lg">Bank BCA</p>
-                            <p id="rekening-bca" class="text-3xl my-3 tracking-widest font-mono text-yellow-400">1234567890</p>
-                            <p class="text-gray-300">a.n. Rama Sanjaya Putra</p>
+                            <p id="rekening-bca" class="text-3xl my-3 tracking-widest font-mono text-yellow-400">8080544015</p>
+                            <p class="text-gray-300">a.n. Ramadiansyah</p>
                         </div>
                         <button onclick="copyToClipboard('rekening-bca')" class="btn-primary">
                             <i data-feather="copy" class="w-4 h-4 inline mr-2"></i>
@@ -742,11 +1237,11 @@
                     <h3 class="font-semibold text-2xl mb-6 text-yellow-400">Kirim Hadiah</h3>
                     <div class="space-y-4 text-left">
                         <p class="text-gray-300">Alamat Kirim Kado:</p>
-                        <p class="text-white font-medium">Jl. P. Mangkubumi No.72A, Cokrodiningratan, Kec. Jetis, Kota Yogyakarta, Daerah Istimewa Yogyakarta 55233</p>
+                        <p class="text-white font-medium">Perumahan Bukit Barelang Tanjung Piayu, Tanjung Piayu, Sei Beduk, Batam City, Riau Islands 29433</p>
                         <div class="pt-4">
                             <p class="text-gray-300">Nama Penerima:</p>
-                            <p class="text-white font-medium">Maria Christin</p>
-                            <p class="text-white font-medium">0876767676767</p>
+                            <p class="text-white font-medium">Ramadiansyah</p>
+                            <p class="text-white font-medium">082283817337</p>
                         </div>
                     </div>
                 </div>
@@ -779,7 +1274,28 @@
         <div id="lightbox-close" class="lightbox-btn"><i data-feather="x"></i></div>
         <div id="lightbox-prev" class="lightbox-btn"><i data-feather="chevron-left"></i></div>
         <div id="lightbox-next" class="lightbox-btn"><i data-feather="chevron-right"></i></div>
-        <img id="lightbox-img" src="" alt="Gambar Galeri">
+        
+        <div class="lightbox-content">
+            <div class="lightbox-counter">
+                <span id="lightbox-current">1</span> / <span id="lightbox-total">9</span>
+            </div>
+            
+            <div class="lightbox-zoom-controls">
+                <div id="zoom-in" class="zoom-btn"><i data-feather="zoom-in"></i></div>
+                <div id="zoom-out" class="zoom-btn"><i data-feather="zoom-out"></i></div>
+                <div id="zoom-reset" class="zoom-btn"><i data-feather="rotate-ccw"></i></div>
+            </div>
+            
+            <div class="lightbox-main-image">
+                <div class="lightbox-image-container">
+                    <img id="lightbox-img" src="" alt="Gambar Galeri">
+                </div>
+            </div>
+            
+            <div class="lightbox-thumbnails" id="lightbox-thumbnails">
+                <!-- Thumbnails will be generated here -->
+            </div>
+        </div>
     </div>
 
     <div id="bottom-nav" class="flex">
@@ -895,33 +1411,199 @@
         }
 
         let currentIndex = 0;
+        let isZoomed = false;
+        let galleryImages = [];
+        
+        // Initialize gallery images array
+        function initializeGalleryImages() {
+            const galleryItems = document.querySelectorAll('.gallery-item img');
+            galleryImages = Array.from(galleryItems).map(img => ({
+                src: img.src,
+                alt: img.alt,
+                title: img.closest('.gallery-item').querySelector('p')?.textContent || 'Foto'
+            }));
+        }
+        
         function showLightbox(index) {
             currentIndex = index;
-            ui.lightboxImg.src = ui.galleryItems[index].src;
+            updateLightboxImage();
+            updateLightboxCounter();
+            updateThumbnails();
             ui.lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
         
-        if(ui.galleryItems.length > 0){
-            ui.galleryItems.forEach((item, index) => item.addEventListener('click', () => showLightbox(index)));
-            ui.lightboxClose.addEventListener('click', () => ui.lightbox.classList.remove('active'));
-            ui.lightboxPrev.addEventListener('click', () => showLightbox((currentIndex - 1 + ui.galleryItems.length) % ui.galleryItems.length));
-            ui.lightboxNext.addEventListener('click', () => showLightbox((currentIndex + 1) % ui.galleryItems.length));
+        function updateLightboxImage() {
+            const img = document.getElementById('lightbox-img');
+            const container = document.querySelector('.lightbox-image-container');
+            
+            if (galleryImages[currentIndex]) {
+                img.src = galleryImages[currentIndex].src;
+                img.alt = galleryImages[currentIndex].alt;
+                
+                // Reset zoom when changing images
+                isZoomed = false;
+                container.classList.remove('zoomed');
+                img.style.transform = 'scale(1)';
+            }
         }
-
-        const navObserver = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    ui.navLinks.forEach(link => {
-                        const linkHref = link.getAttribute('href');
-                        if (linkHref) {
-                             link.classList.toggle('active', linkHref.split('#')[1] === entry.target.id);
-                        }
-                    });
+        
+        function updateLightboxCounter() {
+            document.getElementById('lightbox-current').textContent = currentIndex + 1;
+            document.getElementById('lightbox-total').textContent = galleryImages.length;
+        }
+        
+        function updateThumbnails() {
+            const thumbnailsContainer = document.getElementById('lightbox-thumbnails');
+            thumbnailsContainer.innerHTML = '';
+            
+            galleryImages.forEach((image, index) => {
+                const thumbnail = document.createElement('div');
+                thumbnail.className = `lightbox-thumbnail ${index === currentIndex ? 'active' : ''}`;
+                thumbnail.innerHTML = `<img src="${image.src}" alt="${image.alt}">`;
+                thumbnail.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateLightboxImage();
+                    updateLightboxCounter();
+                    updateThumbnails();
+                });
+                thumbnailsContainer.appendChild(thumbnail);
+            });
+        }
+        
+        function closeLightbox() {
+            ui.lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            isZoomed = false;
+            const container = document.querySelector('.lightbox-image-container');
+            const img = document.getElementById('lightbox-img');
+            container.classList.remove('zoomed');
+            img.style.transform = 'scale(1)';
+        }
+        
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % galleryImages.length;
+            updateLightboxImage();
+            updateLightboxCounter();
+            updateThumbnails();
+        }
+        
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateLightboxImage();
+            updateLightboxCounter();
+            updateThumbnails();
+        }
+        
+        function zoomIn() {
+            const img = document.getElementById('lightbox-img');
+            const container = document.querySelector('.lightbox-image-container');
+            if (!isZoomed) {
+                isZoomed = true;
+                container.classList.add('zoomed');
+                img.style.transform = 'scale(1.5)';
+            }
+        }
+        
+        function zoomOut() {
+            const img = document.getElementById('lightbox-img');
+            const container = document.querySelector('.lightbox-image-container');
+            if (isZoomed) {
+                isZoomed = false;
+                container.classList.remove('zoomed');
+                img.style.transform = 'scale(1)';
+            }
+        }
+        
+        function resetZoom() {
+            const img = document.getElementById('lightbox-img');
+            const container = document.querySelector('.lightbox-image-container');
+            isZoomed = false;
+            container.classList.remove('zoomed');
+            img.style.transform = 'scale(1)';
+        }
+        
+        // Initialize lightbox functionality
+        function initializeLightbox() {
+            initializeGalleryImages();
+            
+            // Gallery item click events
+            document.querySelectorAll('.gallery-item').forEach((item, index) => {
+                item.addEventListener('click', () => showLightbox(index));
+            });
+            
+            // Lightbox controls
+            ui.lightboxClose.addEventListener('click', closeLightbox);
+            ui.lightboxPrev.addEventListener('click', prevImage);
+            ui.lightboxNext.addEventListener('click', nextImage);
+            
+            // Zoom controls
+            document.getElementById('zoom-in').addEventListener('click', zoomIn);
+            document.getElementById('zoom-out').addEventListener('click', zoomOut);
+            document.getElementById('zoom-reset').addEventListener('click', resetZoom);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!ui.lightbox.classList.contains('active')) return;
+                
+                switch(e.key) {
+                    case 'Escape':
+                        closeLightbox();
+                        break;
+                    case 'ArrowLeft':
+                        prevImage();
+                        break;
+                    case 'ArrowRight':
+                        nextImage();
+                        break;
+                    case '+':
+                    case '=':
+                        zoomIn();
+                        break;
+                    case '-':
+                        zoomOut();
+                        break;
+                    case '0':
+                        resetZoom();
+                        break;
                 }
             });
-        }, { rootMargin: '-50% 0px -50% 0px' });
-        ui.sections.forEach(sec => navObserver.observe(sec));
-        
+            
+            // Click outside to close
+            ui.lightbox.addEventListener('click', (e) => {
+                if (e.target === ui.lightbox) {
+                    closeLightbox();
+                }
+            });
+            
+            // View all photos button
+            const viewAllBtn = document.getElementById('view-all-photos-btn');
+            if (viewAllBtn) {
+                viewAllBtn.addEventListener('click', () => {
+                    // Add click animation
+                    viewAllBtn.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        viewAllBtn.style.transform = '';
+                    }, 150);
+                    
+                    // Create ripple effect
+                    const ripple = document.createElement('div');
+                    ripple.className = 'absolute inset-0 bg-white/30 rounded-full scale-0 animate-ping';
+                    ripple.style.animationDuration = '0.6s';
+                    viewAllBtn.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                    
+                    // Show lightbox with delay for better UX
+                    setTimeout(() => {
+                        showLightbox(0); // Start from first image
+                    }, 200);
+                });
+            }
+        }
+
         // Wish Management System
         class WishManager {
             constructor() {
@@ -1226,6 +1908,9 @@
             setupCountdown();
             generateCalendarLink();
             
+            // Initialize lightbox
+            initializeLightbox();
+            
             // Initialize wish manager
             wishManager = new WishManager();
             
@@ -1252,6 +1937,22 @@
                 });
             }
         });
+
+        const navObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    ui.navLinks.forEach(link => {
+                        const linkHref = link.getAttribute('href');
+                        if (linkHref) {
+                             link.classList.toggle('active', linkHref.split('#')[1] === entry.target.id);
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: '-50% 0px -50% 0px' });
+        ui.sections.forEach(sec => navObserver.observe(sec));
+        
+        // Wish Management System
     </script>
 </body>
 </html>
